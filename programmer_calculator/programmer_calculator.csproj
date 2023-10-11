@@ -4,7 +4,18 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
+	<UseWindowsForms>true</UseWindowsForms>
+	<UseWPF>true</UseWPF>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="quikcalc.ico" />
+    <None Remove="quikcalc.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="quikcalc.ico" />
+    <Resource Include="quikcalc.png" />
+  </ItemGroup>
 
 </Project>
