@@ -13,10 +13,10 @@
         ResizeMode="NoResize"
         Background="#00ffffff"
         AllowsTransparency="True"
-        KeyDown="EscClose" Icon="/quikcalc.png">
+        KeyDown="EscClose" Icon="/quikcalc.png" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
     <Grid>
         <Border Background="#d9000000" CornerRadius="10" BorderThickness="1"/>
-        <TextBox HorizontalAlignment="Left"  VerticalAlignment="Center" Width="600" Height="46" Margin="10,0,0,0" Background="#00ffffff" BorderBrush="{x:Null}" Foreground="White" FontSize="36" FontFamily="Meiryo UI" CaretBrush="White"/>
+        <TextBox HorizontalAlignment="Left"  VerticalAlignment="Center" Width="600" Height="46" Margin="10,0,0,0" Background="#00ffffff" BorderBrush="{x:Null}" Foreground="White" FontSize="36" FontFamily="Meiryo UI" CaretBrush="White" Name="formulaTextBox"/>
 
     </Grid>
 </Window>

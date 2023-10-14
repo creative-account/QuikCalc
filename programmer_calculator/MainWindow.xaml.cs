@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Interop;
+using HotKeySample;
 
 namespace programmer_calculator
 {
@@ -23,14 +24,16 @@ namespace programmer_calculator
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const int WM_HOTKEY = 0x0312;
 
+        private HotKeyHelper _hotkey;
         public MainWindow()
         {
             InitializeComponent();
 
             this.MouseLeftButtonDown += (sender, e) => { this.DragMove(); };
-            Loaded += MainWindow_Loaded;
+            this._hotkey = new HotKeyHelper(this);
+            this._hotkey.Register(ModifierKeys.Windows, Key.C, (_, __) => { SystemSounds.Beep.Play(); });
+            formulaTextBox.Focus();
         }
 
         public void EscClose(object sender, KeyEventArgs e)
@@ -42,45 +45,13 @@ namespace programmer_calculator
             }
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        protected override void OnClosed(EventArgs e)
         {
-            // ウィンドウハンドルを取得
-            IntPtr hwnd = new WindowInteropHelper(this).Handle;
+            base.OnClosed(e);
 
-            // ホットキーを登録 (MOD_CONTROL = 0x0002, MOD_SHIFT = 0x0004)
-            RegisterHotKey(hwnd, 1, 0x0006, KeyInterop.VirtualKeyFromKey(Key.C));
+            // HotKeyの登録解除
+            this._hotkey.Dispose();
         }
-
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-
-            // メッセージループを監視してホットキーを処理
-            HwndSource source = HwndSource.FromHwnd(new WindowInteropHelper(this).Handle);
-            source.AddHook(WndProc);
-        }
-
-        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            if (msg == WM_HOTKEY)
-            {
-                int hotkeyId = wParam.ToInt32();
-
-                // ホットキーが押されたときの処理をここに追加
-                if (hotkeyId == 1)
-                {
-                    // この部分にアプリケーションの起動処理を記述
-                    SystemSounds.Beep.Play();
-                }
-            }
-            return IntPtr.Zero;
-        }
-
-        [DllImport("user32.dll")]
-        public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, int vk);
-
-        [DllImport("user32.dll")]
-        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
     }
 }
